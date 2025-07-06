@@ -25,3 +25,4 @@ jobs:
         with:
           node-auth-token: ${{ secrets.GHA_PACKAGES }}
           sonar-token: ${{ secrets.SONARCLOUD_TOKEN }}
+          cc-test-reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}

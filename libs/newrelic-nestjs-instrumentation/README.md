@@ -392,7 +392,7 @@ export class DebugService {
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](../../README.md#🤝-contributing) for details on development setup, testing, and submission guidelines.
 
 ### Development Setup
 

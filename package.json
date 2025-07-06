@@ -25,7 +25,17 @@
       "main"
     ]
   },
-  "keywords": [],
+  "keywords": [
+    "nestjs",
+    "instrumentation",
+    "monitoring",
+    "observability",
+    "monorepo",
+    "pnpm",
+    "turbo",
+    "newrelic",
+    "typescript"
+  ],
   "engines": {
     "node": "22"
   },

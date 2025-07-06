@@ -9,8 +9,8 @@ inputs:
     description: 'GitHub token for checkout'
     required: true
     default: ${{ github.token }}
-  sonar-token:
-    description: 'SonarCloud token'
+  cc-test-reporter-id:
+    description: 'Code Climate Test Reporter ID'
     required: true
 
 runs:
@@ -96,3 +96,10 @@ runs:
     - name: Test packages
       shell: bash
       run: pnpm run test:cov
+
+    - name: Submit Code Quality
+      uses: qltysh/qlty-action/coverage@v1
+      if: inputs.cc-test-reporter-id != ''
+      with:
+        token: ${{ inputs.cc-test-reporter-id }}
+        files: coverage/lcov.info

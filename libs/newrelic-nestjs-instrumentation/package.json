@@ -31,24 +31,37 @@
     "instrumentation",
     "monitoring",
     "tracing",
+    "observability",
+    "apm",
+    "distributed-tracing",
     "sqs",
     "kafka",
     "http2",
     "microservices",
-    "distributed-tracing",
-    "apm",
-    "observability"
+    "background-jobs",
+    "cron-jobs",
+    "message-queue",
+    "event-driven",
+    "async-context",
+    "transaction-management",
+    "performance-monitoring",
+    "nodejs",
+    "typescript",
+    "controller",
+    "guard",
+    "interceptor",
+    "nestjs-module"
   ],
-  "author": "Grupo Boticário",
-  "license": "ISC",
+  "author": "Codibre",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/newrelic-nestjs-instrumentation.git"
+    "url": "git+https://github.com/codibre/nestjs-instrumentation.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/newrelic-nestjs-instrumentation/issues"
+    "url": "https://github.com/codibre/nestjs-instrumentation/issues"
   },
-  "homepage": "https://github.com/your-org/newrelic-nestjs-instrumentation#readme",
+  "homepage": "https://github.com/codibre/nestjs-instrumentation#readme",
   "publishConfig": {
     "access": "public"
   },
