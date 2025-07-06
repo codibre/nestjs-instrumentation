@@ -1,0 +1,65 @@
+{
+  "name": "newrelic-nestjs-instrumentation",
+  "version": "0.1.0",
+  "description": "Comprehensive New Relic instrumentation for NestJS applications - SQS, Kafka, HTTP/2, cron jobs and custom protocols",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "test": "jest --runInBand",
+    "test:scope": "jest --runInBand --scope",
+    "test:cov": "jest --runInBand --coverage",
+    "test:unit": "NODE_ENV=test jest --runInBand --forceExit",
+    "lint": "pnpm run lint:format && pnpm run lint:style",
+    "lint:fix": "pnpm run lint:format:fix && pnpm run lint:style:fix",
+    "lint:format": "prettier --check '**/{src,test}/**/*.ts'",
+    "lint:format:fix": "prettier --write '**/{src,test}/**/*.ts'",
+    "lint:style": "eslint",
+    "lint:style:fix": "eslint --fix",
+    "lint:staged": "lint-staged",
+    "prepare": "husky"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "newrelic",
+    "nestjs",
+    "instrumentation",
+    "monitoring",
+    "tracing",
+    "sqs",
+    "kafka",
+    "http2",
+    "microservices",
+    "distributed-tracing",
+    "apm",
+    "observability"
+  ],
+  "author": "Grupo Boticário",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/newrelic-nestjs-instrumentation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/newrelic-nestjs-instrumentation/issues"
+  },
+  "homepage": "https://github.com/your-org/newrelic-nestjs-instrumentation#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "@nestjs/common": "*",
+    "@nestjs/core": "*",
+    "@types/newrelic": "^9.14.8",
+    "newrelic": "*"
+  },
+  "peerDependencies": {
+    "newrelic": "*"
+  }
+}
