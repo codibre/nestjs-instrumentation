@@ -67,9 +67,6 @@ import { NewReliNestjsEvent } from './newrelic-nestjs-event';
 			provide: APP_INTERCEPTOR,
 			useClass: NewRelicInterceptor,
 		},
-		// Also register the classes as standalone providers for testing
-		NewrelicContextGuard,
-		NewRelicInterceptor,
 		InternalContext,
 		NewReliNestjsEvent,
 	],

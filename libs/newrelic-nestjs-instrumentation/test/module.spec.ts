@@ -11,8 +11,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventEmitter } from 'stream';
 import { NestJsNewrelicInstrumentationModule } from '../src/nestjs-newrelic-instrumentation.module';
 import { NewReliNestjsEvent } from '../src/newrelic-nestjs-event';
-import { NewrelicContextGuard } from '../src/newrelic-context-guard';
-import { NewRelicInterceptor } from '../src/newrelic.interceptor';
 import { emitterSymbol, InternalContext } from '../src/internal';
 
 describe('NestJsNewrelicInstrumentationModule', () => {
@@ -55,36 +53,36 @@ describe('NestJsNewrelicInstrumentationModule', () => {
 		});
 	});
 
-	describe('global providers', () => {
-		it('should register NewrelicContextGuard as global guard', () => {
-			// Instead of accessing APP_GUARD directly, test that the guard can be instantiated
-			const guard = module.get(NewrelicContextGuard);
-			expect(guard).toBeDefined();
-			expect(guard).toBeInstanceOf(NewrelicContextGuard);
+	describe('module functionality', () => {
+		it('should provide all internal services', () => {
+			const internalContext = module.get(InternalContext);
+			const emitter = module.get(emitterSymbol);
+
+			expect(internalContext).toBeDefined();
+			expect(internalContext).toBeInstanceOf(InternalContext);
+			expect(emitter).toBeDefined();
+			expect(emitter).toBeInstanceOf(EventEmitter);
 		});
 
-		it('should register NewrelicInterceptor as global interceptor', () => {
-			// Instead of accessing APP_INTERCEPTOR directly, test that the interceptor can be instantiated
-			const interceptor = module.get(NewRelicInterceptor);
-			expect(interceptor).toBeDefined();
-			expect(interceptor).toBeInstanceOf(NewRelicInterceptor);
-		});
-	});
-
-	describe('service integration', () => {
-		it('should inject same EventEmitter instance in all services', () => {
+		it('should have proper provider configuration', () => {
+			// Test that we can get the event service and it works
 			const eventService = module.get(NewReliNestjsEvent);
-			const guardService = module.get(NewrelicContextGuard);
-			const interceptorService = module.get(NewRelicInterceptor);
 			const emitter = module.get(emitterSymbol);
 
 			expect(eventService).toBeDefined();
-			expect(guardService).toBeDefined();
-			expect(interceptorService).toBeDefined();
 			expect(emitter).toBeDefined();
+
+			// Test event emission works with real event types
+			let eventReceived = false;
+			eventService.on('transactionStarted', () => {
+				eventReceived = true;
+			});
+
+			emitter.emit('transactionStarted', 'test-id');
+			expect(eventReceived).toBe(true);
 		});
 
-		it('should allow NewReliNestjsEvent to receive events from guard and interceptor', (done) => {
+		it('should allow NewReliNestjsEvent to receive events from emitter', (done) => {
 			const eventService = module.get(NewReliNestjsEvent);
 			const emitter = module.get(emitterSymbol);
 
