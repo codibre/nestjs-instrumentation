@@ -1,0 +1,89 @@
+{
+  "name": "otel-nestjs-instrumentation",
+  "version": "0.0.0",
+  "description": "Comprehensive OpenTelemetry instrumentation for NestJS applications - SQS, Kafka, HTTP/2, cron jobs and custom protocols",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "test": "jest --runInBand",
+    "test:scope": "jest --runInBand --scope",
+    "test:cov": "jest --runInBand --coverage",
+    "test:unit": "NODE_ENV=test jest --runInBand --forceExit",
+    "lint": "pnpm run lint:format && pnpm run lint:style",
+    "lint:fix": "pnpm run lint:format:fix && pnpm run lint:style:fix",
+    "lint:format": "prettier --check '**/{src,test}/**/*.ts'",
+    "lint:format:fix": "prettier --write '**/{src,test}/**/*.ts'",
+    "lint:style": "eslint",
+    "lint:style:fix": "eslint --fix",
+    "lint:staged": "lint-staged",
+    "prepare": "husky"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "opentelemetry",
+    "otel",
+    "nestjs",
+    "instrumentation",
+    "monitoring",
+    "tracing",
+    "observability",
+    "apm",
+    "distributed-tracing",
+    "sqs",
+    "kafka",
+    "http2",
+    "microservices",
+    "background-jobs",
+    "cron-jobs",
+    "message-queue",
+    "event-driven",
+    "async-context",
+    "transaction-management",
+    "performance-monitoring",
+    "nodejs",
+    "typescript",
+    "controller",
+    "guard",
+    "interceptor",
+    "nestjs-module",
+    "telemetry",
+    "metrics",
+    "spans"
+  ],
+  "author": "Codibre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codibre/nestjs-instrumentation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codibre/nestjs-instrumentation/issues"
+  },
+  "homepage": "https://github.com/codibre/nestjs-instrumentation#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "@nestjs/common": "*",
+    "@nestjs/core": "*",
+    "@nestjs/platform-express": "^11.1.3",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.1"
+  },
+  "peerDependencies": {
+    "@opentelemetry/api": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    }
+  }
+}
