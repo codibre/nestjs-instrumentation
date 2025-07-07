@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 (2025-07-07)
+
+### Features
+
+* implementing otel lib ([f69f7c4](https://github.com/codibre/nestjs-instrumentation/commit/f69f7c4d09edeec92782d1a4a1ffcc8801b2e146))
+
 ## 0.2.0 (2025-07-06)
 
 ### Features
