@@ -1,6 +1,6 @@
 {
   "name": "otel-nestjs-instrumentation",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Comprehensive OpenTelemetry instrumentation for NestJS applications - SQS, Kafka, HTTP/2, cron jobs and custom protocols",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2](https://github.com/codibre/nestjs-instrumentation/compare/otel-nestjs-instrumentation@0.1.1...${npm.name}@0.1.2) (2025-07-09)
+
+### Bug Fixes
+
+* removing setImmediate treatment ([57c8932](https://github.com/codibre/nestjs-instrumentation/commit/57c89329a67b78ba789294db76c21cc5f8aa351c))
+
 ## [0.1.1](https://github.com/codibre/nestjs-instrumentation/compare/otel-nestjs-instrumentation@0.1.0...${npm.name}@0.1.1) (2025-07-09)
 
 ### Bug Fixes
