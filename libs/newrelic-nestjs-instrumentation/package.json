@@ -1,6 +1,6 @@
 {
   "name": "newrelic-nestjs-instrumentation",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Comprehensive New Relic instrumentation for NestJS applications - SQS, Kafka, HTTP/2, cron jobs and custom protocols",
   "main": "dist/index.js",
   "files": [

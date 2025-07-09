@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.4](https://github.com/codibre/nestjs-instrumentation/compare/newrelic-nestjs-instrumentation@0.2.2...${npm.name}@0.2.4) (2025-07-09)
+
+### Bug Fixes
+
+* corrigindo versão publicada ([3cc95a8](https://github.com/codibre/nestjs-instrumentation/commit/3cc95a8cbab489638014a64c003b5ba4087fb844))
+
 ## [0.2.2](https://github.com/codibre/nestjs-instrumentation/compare/newrelic-nestjs-instrumentation@0.2.0...${npm.name}@0.2.2) (2025-07-09)
 
 ### Bug Fixes
