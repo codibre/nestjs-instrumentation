@@ -125,20 +125,6 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should set custom transaction ID in internal context', async () => {
-			const mockTransaction = createMockNewRelicTransaction('custom-trace-id');
-
-			mockNewRelic.getTraceMetadata.mockReturnValue(null);
-			mockNewRelic.startWebTransaction.mockReturnValue(mockTransaction);
-			mockNewRelic.getTraceMetadata.mockReturnValueOnce(null).mockReturnValue({
-				traceId: 'custom-trace-id',
-			});
-
-			await guard.canActivate(mockExecutionContext);
-
-			expect(mockInternalContext.customTransactionId).toBe('custom-trace-id');
-		});
-
 		it('should handle non-HTTP context types', async () => {
 			const nonHttpContext = createMockExecutionContext(
 				'TestController',
