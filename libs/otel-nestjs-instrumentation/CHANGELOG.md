@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1](https://github.com/codibre/nestjs-instrumentation/compare/otel-nestjs-instrumentation@0.1.0...${npm.name}@0.1.1) (2025-07-09)
+
+### Bug Fixes
+
+* fixing context capture ([72c9389](https://github.com/codibre/nestjs-instrumentation/commit/72c9389a544e08658e59e16ac47032d5b3624f8b))
+
 ## 0.1.0 (2025-07-07)
 
 ### Features
