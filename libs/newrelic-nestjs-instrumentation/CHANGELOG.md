@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.5](https://github.com/codibre/nestjs-instrumentation/compare/newrelic-nestjs-instrumentation@0.2.4...${npm.name}@0.2.5) (2025-07-09)
+
+### Bug Fixes
+
+* removing setImmediate treatment ([57c8932](https://github.com/codibre/nestjs-instrumentation/commit/57c89329a67b78ba789294db76c21cc5f8aa351c))
+
 ## [0.2.4](https://github.com/codibre/nestjs-instrumentation/compare/newrelic-nestjs-instrumentation@0.2.2...${npm.name}@0.2.4) (2025-07-09)
 
 ### Bug Fixes
