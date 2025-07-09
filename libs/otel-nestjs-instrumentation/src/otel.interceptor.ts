@@ -161,8 +161,8 @@ export class OtelInterceptor implements NestInterceptor {
 					? error
 					: { name: 'UnknownError', message: String(error), stack: undefined };
 			otelInstrumentation.addAttributes({
-				'error.name': errorObj.name || 'UnknownError',
-				'error.message': errorObj.message || String(error),
+				'error.name': errorObj.name,
+				'error.message': errorObj.message,
 				'error.stack': errorObj.stack || 'No stack trace available',
 			});
 		} catch (finishError) {

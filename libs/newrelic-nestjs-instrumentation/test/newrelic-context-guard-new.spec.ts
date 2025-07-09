@@ -39,18 +39,18 @@ describe('NewrelicContextGuard', () => {
 	});
 
 	describe('canActivate', () => {
-		it('should return true when transaction metadata exists', () => {
+		it('should return true when transaction metadata exists', async () => {
 			mockNewRelic.getTraceMetadata.mockReturnValue({
 				traceId: 'existing-trace-id',
 			});
 
-			const result = guard.canActivate(mockExecutionContext);
+			const result = await guard.canActivate(mockExecutionContext);
 
 			expect(result).toBe(true);
 			expect(mockNewRelic.getTraceMetadata).toHaveBeenCalled();
 		});
 
-		it('should create new transaction when no trace metadata exists', () => {
+		it('should create new transaction when no trace metadata exists', async () => {
 			const mockTransaction = createMockNewRelicTransaction('new-trace-id');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
@@ -59,7 +59,7 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'new-trace-id',
 			});
 
-			const result = guard.canActivate(mockExecutionContext);
+			const result = await guard.canActivate(mockExecutionContext);
 
 			expect(result).toBe(true);
 			expect(mockNewRelic.startWebTransaction).toHaveBeenCalledWith(
@@ -68,7 +68,7 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should emit transactionStarted event when transaction is created', () => {
+		it('should emit transactionStarted event when transaction is created', async () => {
 			const mockTransaction = createMockNewRelicTransaction('new-trace-id');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
@@ -77,7 +77,7 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'new-trace-id',
 			});
 
-			guard.canActivate(mockExecutionContext);
+			await guard.canActivate(mockExecutionContext);
 
 			expect(mockEmitter.emit).toHaveBeenCalledWith(
 				'transactionStarted',
@@ -85,7 +85,7 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should emit transactionStartFailed event when transaction creation fails', () => {
+		it('should emit transactionStartFailed event when transaction creation fails', async () => {
 			const error = new Error('Transaction creation failed');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
@@ -93,7 +93,7 @@ describe('NewrelicContextGuard', () => {
 				throw error;
 			});
 
-			const result = guard.canActivate(mockExecutionContext);
+			const result = await guard.canActivate(mockExecutionContext);
 
 			expect(result).toBe(true);
 			expect(mockEmitter.emit).toHaveBeenCalledWith(
@@ -103,7 +103,7 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should handle HTTP context and accept distributed trace headers', () => {
+		it('should handle HTTP context and accept distributed trace headers', async () => {
 			const mockTransaction = createMockNewRelicTransaction('http-trace-id');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
@@ -112,7 +112,7 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'http-trace-id',
 			});
 
-			guard.canActivate(mockExecutionContext);
+			await guard.canActivate(mockExecutionContext);
 
 			expect(
 				mockTransaction.acceptDistributedTraceHeaders,
@@ -125,7 +125,7 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should set custom transaction ID in internal context', () => {
+		it('should set custom transaction ID in internal context', async () => {
 			const mockTransaction = createMockNewRelicTransaction('custom-trace-id');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
@@ -134,12 +134,12 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'custom-trace-id',
 			});
 
-			guard.canActivate(mockExecutionContext);
+			await guard.canActivate(mockExecutionContext);
 
 			expect(mockInternalContext.customTransactionId).toBe('custom-trace-id');
 		});
 
-		it('should handle non-HTTP context types', () => {
+		it('should handle non-HTTP context types', async () => {
 			const nonHttpContext = createMockExecutionContext(
 				'TestController',
 				'testHandler',
@@ -153,7 +153,7 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'rpc-trace-id',
 			});
 
-			const result = guard.canActivate(nonHttpContext);
+			const result = await guard.canActivate(nonHttpContext);
 
 			expect(result).toBe(true);
 			expect(
@@ -161,7 +161,7 @@ describe('NewrelicContextGuard', () => {
 			).not.toHaveBeenCalled();
 		});
 
-		it('should generate correct transaction name from execution context', () => {
+		it('should generate correct transaction name from execution context', async () => {
 			const customContext = createMockExecutionContext(
 				'UserController',
 				'getUsers',
@@ -171,7 +171,7 @@ describe('NewrelicContextGuard', () => {
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
 			mockNewRelic.startWebTransaction.mockReturnValue(mockTransaction);
 
-			guard.canActivate(customContext);
+			await guard.canActivate(customContext);
 
 			expect(mockNewRelic.startWebTransaction).toHaveBeenCalledWith(
 				'UserController.getUsers',
@@ -179,14 +179,14 @@ describe('NewrelicContextGuard', () => {
 			);
 		});
 
-		it('should call getTransaction within startWebTransaction callback', () => {
+		it('should call getTransaction within startWebTransaction callback', async () => {
 			const mockTransaction =
 				createMockNewRelicTransaction('callback-trace-id');
 
 			mockNewRelic.getTraceMetadata.mockReturnValue(null);
 
 			// Mock startWebTransaction to actually call the callback
-			mockNewRelic.startWebTransaction.mockImplementation((name, callback) => {
+			mockNewRelic.startWebTransaction.mockImplementation((_name, callback) => {
 				callback(); // This should call newrelic.getTransaction()
 				return mockTransaction;
 			});
@@ -195,7 +195,7 @@ describe('NewrelicContextGuard', () => {
 				traceId: 'callback-trace-id',
 			});
 
-			const result = guard.canActivate(mockExecutionContext);
+			const result = await guard.canActivate(mockExecutionContext);
 
 			expect(result).toBe(true);
 			expect(mockNewRelic.startWebTransaction).toHaveBeenCalledWith(
@@ -208,23 +208,23 @@ describe('NewrelicContextGuard', () => {
 	});
 
 	describe('error handling', () => {
-		it('should always return true even when errors occur', () => {
+		it('should always return true even when errors occur', async () => {
 			mockNewRelic.getTraceMetadata.mockImplementation(() => {
 				throw new Error('NewRelic error');
 			});
 
-			const result = guard.canActivate(mockExecutionContext);
+			const result = await guard.canActivate(mockExecutionContext);
 
 			expect(result).toBe(true);
 		});
 
-		it('should emit error event when getTraceMetadata throws', () => {
+		it('should emit error event when getTraceMetadata throws', async () => {
 			const error = new Error('getTraceMetadata error');
 			mockNewRelic.getTraceMetadata.mockImplementation(() => {
 				throw error;
 			});
 
-			guard.canActivate(mockExecutionContext);
+			await guard.canActivate(mockExecutionContext);
 
 			expect(mockEmitter.emit).toHaveBeenCalledWith(
 				'transactionStartFailed',

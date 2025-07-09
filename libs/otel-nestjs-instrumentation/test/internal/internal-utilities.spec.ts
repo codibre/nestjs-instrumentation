@@ -154,19 +154,6 @@ describe('Internal Utilities', () => {
 
 	describe('otelInstrumentation', () => {
 		describe('captureOrCreate', () => {
-			it('should return existing span information when span is active', () => {
-				const mockSpan = createMockOtelSpan('existing-trace-id');
-				mockOtelApi.trace.getActiveSpan.mockReturnValue(mockSpan);
-
-				const context = createMockExecutionContext();
-				const traceId = otelInstrumentation.captureOrCreate(
-					'TestTransaction',
-					context,
-				);
-
-				expect(traceId).toBe('existing-trace-id');
-			});
-
 			it('should create new span when no active span exists', () => {
 				mockOtelApi.trace.getActiveSpan.mockReturnValue(null);
 				const mockSpan = createMockOtelSpan('new-trace-id');
@@ -174,10 +161,7 @@ describe('Internal Utilities', () => {
 				mockOtelApi.trace.getTracer.mockReturnValue(mockTracer);
 
 				const context = createMockExecutionContext();
-				const traceId = otelInstrumentation.captureOrCreate(
-					'TestTransaction',
-					context,
-				);
+				const traceId = otelInstrumentation.create('TestTransaction', context);
 
 				expect(traceId).toBe('new-trace-id');
 				expect(mockTracer.startSpan).toHaveBeenCalledWith(
@@ -202,7 +186,7 @@ describe('Internal Utilities', () => {
 					},
 				});
 
-				otelInstrumentation.captureOrCreate('TestTransaction', context);
+				otelInstrumentation.create('TestTransaction', context);
 
 				expect(mockOtelApi.propagation.extract).toHaveBeenCalledWith(
 					{},
@@ -220,7 +204,7 @@ describe('Internal Utilities', () => {
 				mockOtelApi.trace.getTracer.mockReturnValue(mockTracer);
 
 				const context = createMockExecutionContext('http');
-				otelInstrumentation.captureOrCreate('HttpTransaction', context);
+				otelInstrumentation.create('HttpTransaction', context);
 
 				expect(mockTracer.startSpan).toHaveBeenCalledWith(
 					'HttpTransaction',
@@ -238,7 +222,7 @@ describe('Internal Utilities', () => {
 				mockOtelApi.trace.getTracer.mockReturnValue(mockTracer);
 
 				const context = createMockExecutionContext('rpc');
-				otelInstrumentation.captureOrCreate('RpcTransaction', context);
+				otelInstrumentation.create('RpcTransaction', context);
 
 				expect(mockTracer.startSpan).toHaveBeenCalledWith(
 					'RpcTransaction',
@@ -256,7 +240,7 @@ describe('Internal Utilities', () => {
 				mockOtelApi.trace.getTracer.mockReturnValue(mockTracer);
 
 				const context = createMockExecutionContext('ws');
-				otelInstrumentation.captureOrCreate('WsTransaction', context);
+				otelInstrumentation.create('WsTransaction', context);
 
 				expect(mockTracer.startSpan).toHaveBeenCalledWith(
 					'WsTransaction',
@@ -279,7 +263,7 @@ describe('Internal Utilities', () => {
 					path: '/api/users',
 				});
 
-				otelInstrumentation.captureOrCreate('HttpTransaction', context);
+				otelInstrumentation.create('HttpTransaction', context);
 
 				expect(mockTracer.startSpan).toHaveBeenCalledWith(
 					'HttpTransaction',
@@ -306,45 +290,10 @@ describe('Internal Utilities', () => {
 					throw new Error('Request not available');
 				});
 
-				const traceId = otelInstrumentation.captureOrCreate(
-					'HttpTransaction',
-					context,
-				);
+				const traceId = otelInstrumentation.create('HttpTransaction', context);
 
 				expect(traceId).toBeDefined();
 				expect(mockTracer.startSpan).toHaveBeenCalled();
-			});
-		});
-
-		describe('getCurrentSpanContext', () => {
-			it('should return trace and span ID when active span exists', () => {
-				const mockSpan = createMockOtelSpan('test-trace-id', 'test-span-id');
-				mockOtelApi.trace.getActiveSpan.mockReturnValue(mockSpan);
-
-				const result = otelInstrumentation.getCurrentSpanContext();
-
-				expect(result).toEqual({
-					traceId: 'test-trace-id',
-					spanId: 'test-span-id',
-				});
-			});
-
-			it('should return empty object when no active span', () => {
-				mockOtelApi.trace.getActiveSpan.mockReturnValue(null);
-
-				const result = otelInstrumentation.getCurrentSpanContext();
-
-				expect(result).toEqual({});
-			});
-
-			it('should handle errors gracefully', () => {
-				mockOtelApi.trace.getActiveSpan.mockImplementation(() => {
-					throw new Error('API error');
-				});
-
-				const result = otelInstrumentation.getCurrentSpanContext();
-
-				expect(result).toEqual({});
 			});
 		});
 

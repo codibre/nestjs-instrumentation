@@ -11,6 +11,7 @@ import {
 	InternalContext,
 	otelInstrumentation,
 } from './internal';
+import { setImmediate } from 'timers/promises';
 
 /**
  * NestJS guard that sets up OpenTelemetry span context for requests.
@@ -102,10 +103,12 @@ export class OtelContextGuard implements CanActivate {
 		const transactionName = getTransactionName(context);
 
 		try {
-			const traceId = otelInstrumentation.captureOrCreate(
-				transactionName,
-				context,
-			);
+			let traceId = otelInstrumentation.getCurrentTransactionId();
+
+			if (traceId) return true;
+
+			traceId = otelInstrumentation.create(transactionName, context);
+			await setImmediate();
 
 			if (traceId) {
 				this.context.customTransactionId = traceId;
