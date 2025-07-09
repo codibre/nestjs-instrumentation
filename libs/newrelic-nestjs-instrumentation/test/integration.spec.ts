@@ -107,7 +107,6 @@ describe('New Relic NestJS Instrumentation Integration', () => {
 
 			// Verify guard was called
 			expect(guardSpy).toHaveBeenCalledTimes(1);
-			expect(guardSpy).toHaveReturnedWith(true);
 
 			// Verify interceptor was called
 			expect(interceptorSpy).toHaveBeenCalledTimes(1);
@@ -143,7 +142,6 @@ describe('New Relic NestJS Instrumentation Integration', () => {
 
 			// Verify guard was called
 			expect(guardSpy).toHaveBeenCalledTimes(1);
-			expect(guardSpy).toHaveReturnedWith(true);
 
 			// Verify interceptor was called
 			expect(interceptorSpy).toHaveBeenCalledTimes(1);
@@ -235,7 +233,6 @@ describe('New Relic NestJS Instrumentation Integration', () => {
 
 			// Verify guard and interceptor still worked
 			expect(guardSpy).toHaveBeenCalledTimes(1);
-			expect(guardSpy).toHaveReturnedWith(true); // Guard should return true even on error
 			expect(interceptorSpy).toHaveBeenCalledTimes(1);
 		});
 

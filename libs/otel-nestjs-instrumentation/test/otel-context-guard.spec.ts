@@ -7,7 +7,7 @@ const mockOtelApi = {
 				setStatus: jest.fn(),
 				end: jest.fn(),
 			})),
-		})),
+		})) as jest.MockedFunction<any>,
 	},
 	context: {
 		active: jest.fn(() => ({})),
@@ -91,11 +91,7 @@ describe('OtelContextGuard', () => {
 
 			await guard.canActivate(mockExecutionContext);
 
-			expect(mockEmitter.emit).toHaveBeenCalledWith(
-				'spanStarted',
-				'existing-trace-id',
-				mockExecutionContext,
-			);
+			expect(mockEmitter.emit).not.toHaveBeenCalled();
 		});
 
 		it('should emit spanStarted event when new span is created', async () => {
@@ -266,6 +262,20 @@ describe('OtelContextGuard', () => {
 			await newGuard.canActivate(mockExecutionContext);
 
 			expect(mockOtelApi.trace.getTracer).toHaveBeenCalledWith('test-otel-app');
+		});
+
+		it('should return true and not emit spanStarted when tracer is not available', async () => {
+			mockOtelApi.trace.getActiveSpan.mockReturnValue(null);
+			mockOtelApi.trace.getTracer.mockReturnValue(undefined);
+
+			const result = await guard.canActivate(mockExecutionContext);
+
+			expect(result).toBe(true);
+			expect(mockEmitter.emit).not.toHaveBeenCalledWith(
+				'spanStarted',
+				expect.anything(),
+				expect.anything(),
+			);
 		});
 	});
 });

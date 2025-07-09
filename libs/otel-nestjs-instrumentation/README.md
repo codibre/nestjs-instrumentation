@@ -30,6 +30,29 @@ npm install otel-nestjs-instrumentation @opentelemetry/api
 pnpm add otel-nestjs-instrumentation @opentelemetry/api
 ```
 
+> **📋 Setup Checklist:**
+> 1. Install the package
+> 2. Configure OpenTelemetry SDK initialization **before** your NestJS app starts
+> 3. Import `OtelNestjsInstrumentationModule` as the **FIRST** module in your AppModule
+> 4. Configure OpenTelemetry environment variables as needed
+
+### ⚠️ Important: Module Import Order
+
+**The `OtelNestjsInstrumentationModule` MUST be imported as the first module in your `AppModule`.** This ensures proper instrumentation setup before other modules are initialized.
+
+```typescript
+import { Module } from '@nestjs/common';
+import { OtelNestjsInstrumentationModule } from 'otel-nestjs-instrumentation';
+
+@Module({
+  imports: [
+    OtelNestjsInstrumentationModule, // 👈 MUST be first!
+    // ... other modules after
+  ],
+})
+export class AppModule {}
+```
+
 ### Basic Setup
 
 ```typescript
@@ -203,8 +226,10 @@ OTEL_RESOURCE_ATTRIBUTES=service.version=1.0.0
 
 ### Advanced Configuration
 
+> **⚠️ Critical:** OpenTelemetry SDK must be initialized **before** importing your NestJS application modules.
+
 ```typescript
-// For more advanced OpenTelemetry setup, configure before your app starts
+// ✅ CORRECT: Initialize OpenTelemetry SDK first
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 
@@ -215,7 +240,7 @@ const sdk = new NodeSDK({
 
 sdk.start();
 
-// Then start your NestJS app
+// ✅ THEN start your NestJS app
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 

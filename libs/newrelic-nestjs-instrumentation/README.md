@@ -38,17 +38,34 @@ yarn add newrelic-nestjs-instrumentation newrelic
 pnpm add newrelic-nestjs-instrumentation newrelic
 ```
 
+> **📋 Setup Checklist:**
+> 1. Install the package
+> 2. Import `newrelic` in your main.ts **before** any other imports
+> 3. Import `NestJsNewrelicInstrumentationModule` as the **FIRST** module in your AppModule
+> 4. Configure New Relic environment variables
+
 ## Quick Start
+
+### ⚠️ Important: Module Import Order
+
+**The instrumentation module MUST be imported as the FIRST module in your main application module.** This ensures proper initialization before any other application code runs.
 
 ### 1. Basic Setup
 
 ```typescript
 import { Module } from '@nestjs/common';
 import { NestJsNewrelicInstrumentationModule } from 'newrelic-nestjs-instrumentation';
+// Import other modules AFTER the instrumentation module
+import { UsersModule } from './users/users.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
-    NestJsNewrelicInstrumentationModule
+    // ⚠️ CRITICAL: Must be the FIRST import
+    NestJsNewrelicInstrumentationModule,
+    // Other modules come after
+    UsersModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}

@@ -8,6 +8,7 @@ import newrelic from 'newrelic';
 import { emitterSymbol, getTransactionName, InternalContext } from './internal';
 import { FastifyRequest } from 'fastify';
 import { EventEmitter } from 'stream';
+import { setImmediate } from 'timers/promises';
 
 /**
  * NestJS guard that sets up New Relic transaction context for requests.
@@ -75,6 +76,7 @@ export class NewrelicContextGuard implements CanActivate {
 		private readonly internalContext: InternalContext,
 		@Inject(emitterSymbol) private readonly emitter: EventEmitter,
 	) {}
+
 	/**
 	 * Sets up New Relic transaction context and allows the request to proceed.
 	 *
@@ -112,7 +114,7 @@ export class NewrelicContextGuard implements CanActivate {
 	 *
 	 * @public
 	 */
-	canActivate(context: ExecutionContext) {
+	async canActivate(context: ExecutionContext) {
 		let transactionId: string | undefined;
 		let newTransaction: newrelic.TransactionHandle | undefined;
 
@@ -128,6 +130,7 @@ export class NewrelicContextGuard implements CanActivate {
 			newTransaction = newrelic.startWebTransaction(transactionName, () =>
 				newrelic.getTransaction(),
 			);
+			await setImmediate();
 			if (context.getType() === 'http') {
 				newTransaction.acceptDistributedTraceHeaders(
 					'HTTP',
